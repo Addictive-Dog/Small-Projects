@@ -1,40 +1,50 @@
 import { people } from "/data.js";
 import { Profile } from "/utils.js";
 
-// Takes all the names from data object and creates an array of names.
+// This array is going to store the profiles that get clicked so we can rank them later
+const clickedProfiles = [];
 
-// Generates a randon number between 0 and the size of the keys length
+// the generateRandomObjectKeyName function generates a random name from the people object and returns it.
+//This is used in the render function to generate two random profiles, which are then rendered to the screen
+//using the Profile class imported from the /utils.js module.
+//
 function generateRandomObjectKeyName() {
-  const keys = Object.keys(people);
-  let randomIndex = Math.ceil(Math.random() * keys.length - 1);
-  let randomName = people[keys[randomIndex]];
-  return randomName;
+  const names = Object.values(people);
+  let randomIndex = Math.ceil(Math.random() * names.length - 1);
+  return names[randomIndex];
 }
 
-// Generate two random profile names
-// let randomProfileOne = generateRandomObjectKeyName();
-/// let randomProfileTwo = generateRandomObjectKeyName();
+// These are being assigned here with global scope so they can be accessed by other functions.
+// They are intitated as undefined.
+var ProfileFirst = generateRandomObjectKeyName();
+var ProfileSecond = generateRandomObjectKeyName();
 
-// Use the random profile numbers to create two new Profile objects
-let ProfileOne = generateRandomObjectKeyName();
-let ProfileTwo = generateRandomObjectKeyName();
-
-// a function that renders the two randomly generated profiles to the screen
+// This while function checks if profiles are the same, since they are both undefined, they are
+// the same, so the profiles execute the random name function until they they are both unique.
+// Then the rest of the function executes and renders them to the screen.
 function render() {
+  while (ProfileFirst === ProfileSecond) {
+    ProfileFirst = generateRandomObjectKeyName();
+    ProfileSecond = generateRandomObjectKeyName();
+  }
+  // Create profiles for the randomly generated names and render them to the screen
+  const ProfileOne = new Profile(ProfileFirst);
+  const ProfileTwo = new Profile(ProfileSecond);
   document.getElementById("card1").innerHTML = ProfileOne.getProfileHtml();
   document.getElementById("card2").innerHTML = ProfileTwo.getProfileHtml();
 }
 
-render();
 // executes the render function automatically when app begins
+render();
 
-// new stuff
-//if (ProfileOne !== ProfileTwo) {
-// document.getElementById("card1").innerHTML = ProfileOne.getProfileHtml();
-//document.getElementById("card2").innerHTML = ProfileTwo.getProfileHtml();
-//} else {
-// Generate new random numbers and random profiles
-//randonNumberOne = generateRandomNumber();
-// randonNumberTwo = generateRandomNumber();
-// randomProfileNameOne = keys[randonNumberOne];
-// randomProfileNameTwo = keys[randonNumberTwo];
+// add an event listener to record swiped card.
+document.getElementById("card1").addEventListener("click", () => {
+  clickedProfiles.push(ProfileFirst);
+  console.log(c);
+  render();
+});
+document.getElementById("card2").addEventListener("click", () => {
+  clickedProfiles.push(ProfileSecond);
+  console.log("card 2 clicked");
+  render();
+});
