@@ -40,11 +40,10 @@ render();
 // add an event listener to record swiped card.
 document.getElementById("card1").addEventListener("click", () => {
   clickedProfiles.push(ProfileFirst);
-  console.log(c);
   render();
 });
 document.getElementById("card2").addEventListener("click", () => {
   clickedProfiles.push(ProfileSecond);
-  console.log("card 2 clicked");
   render();
 });
+
